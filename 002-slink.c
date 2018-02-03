@@ -92,6 +92,55 @@ static void link_delet(link_data *ldata, unsigned int loc)
 	dnode = NULL;
 }
 
+static void link_amend(link_data *ldata, unsigned int loc, char data)
+{
+	int i = 0;
+	link_data *lp = ldata;
+	if (!lp) {
+		printf("link is not exsit \n");
+		exit(-1);
+	}
+
+	for (; i < loc; i++) {
+		lp = lp->next;
+		if (!lp) {
+			printf("amend loc %d is invalid\n", loc);
+			return ;
+		}
+	}
+
+	if (!lp->next) {
+		printf("amend loc %d is invalid\n", loc);
+		return ;
+	}
+
+	lp->next->data = data;
+}
+
+static int link_select(link_data *ldata, char data)
+{
+	int i = 0;
+	link_data *lp = ldata;
+	if (!lp) {
+		printf("link is not exsit\n");
+		return -1;
+	}
+
+	lp = lp->next;
+	if (!lp) {
+		printf("select link has no data\n");
+		return -1;
+	}
+	for (; lp != NULL; lp = lp->next) {
+		if (lp->data == data) {
+			return i;
+		}
+		i++;
+	}
+
+	return -1;
+}
+
 int main()
 {
 	link_data *ldata;
@@ -108,11 +157,18 @@ int main()
 	link_delet(ldata, 4);
 	link_show(ldata);
 
-#if 0
-	link_amend();
+	link_amend(ldata, 3, 'u');
+	link_amend(ldata, 4, 'u');
+	link_amend(ldata, 0, 'y');
 	link_show(ldata);
-	link_select();
-	link_show(ldata);
-#endif
+
+	int loc;
+	loc = link_select(ldata, 'u');
+	printf("select data 'u' is in loc %d\n", loc);
+	loc = link_select(ldata, 'y');
+	printf("select data 'y' is in loc %d\n", loc);
+	loc = link_select(ldata, 't');
+	printf("select data 't' is in loc %d\n", loc);
+
 	return 0;
 }
