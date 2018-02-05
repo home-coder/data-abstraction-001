@@ -88,6 +88,45 @@ static void srlink_insert(srlink_data **srldata, unsigned int loc, char data)
 	srlp->next = nsrldata;
 }
 
+static void srlink_delete(srlink_data **srldata, unsigned int loc)
+{
+	int i;
+	srlink_data *srlp = *srldata;
+	if (!srlp) {
+		printf("srlink is not exsit\n");
+		return ;
+	}
+
+	//head(0)->head(0); 0
+	if (loc == 0 && srlp->next == *srldata) {
+		free(*srldata);
+		*srldata = NULL;
+		printf("完全删除了整个srlink链表\n");
+		return ;
+	}
+
+	//head(0)->(1)...->head(0); 0
+	if (loc == 0) {
+		srlp = srlp->next;
+		free(*srldata);
+		*srldata = srlp;
+		return ;
+	}
+
+	//head(0)->(1)...->head(0); n
+	for (i = 1; i < loc; i++) {
+		srlp = srlp->next;
+		if (srlp->next == *srldata) {
+			printf("delete loc %d is invalid\n", loc);
+			return ;
+		}
+	}
+	srlink_data *desrlp = srlp->next;
+	srlp->next = srlp->next->next;
+	free(desrlp);
+	desrlp = NULL;
+}
+
 int main()
 {
 	srlink_data *srldata;
@@ -102,8 +141,12 @@ int main()
 	srlink_insert(&srldata, 2, 'e');
 	srlink_insert(&srldata, 1, 'w');
 	srlink_show(srldata);
+
+	srlink_delete(&srldata, 0);
+	srlink_delete(&srldata, 1);
+	srlink_delete(&srldata, 3);
+	srlink_show(srldata);
 #if 0
-	srlink_delete();
 	srlink_amend();
 	srlink_select();
 #endif
