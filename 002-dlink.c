@@ -20,13 +20,13 @@ static void dlink_show(dlink_data *dldata)
 		return ;
 	}
 
-	if (dlp->next == dlp) {
+	if (dlp->next == NULL) {
 		printf("dlink has no data\n");
 		return ;
 	}
 
 	dlp = dlp->next;
-	for (; dlp != dldata; dlp = dlp->next) {
+	for (; dlp != NULL; dlp = dlp->next) {
 		printf("%c->", dlp->data);
 	}
 
@@ -41,12 +41,13 @@ static void dlink_init(dlink_data **dldata)
 		return ;
 	}
 
-	(*dldata)->next = *dldata;
-	(*dldata)->prev = *dldata;
+	(*dldata)->next = NULL;
+	(*dldata)->prev = NULL;
 }
 
-static void dlink_insert(dlink_data *dldata, unsigned int loc, int data)
+static void dlink_insert(dlink_data *dldata, unsigned int loc, char data)
 {
+	printf("insert loc %d data %c-->\n", loc, data);
 	int i = 0;
 	dlink_data *dlp = dldata;
 	if (!dlp) {
@@ -54,24 +55,64 @@ static void dlink_insert(dlink_data *dldata, unsigned int loc, int data)
 		return ;
 	}
 
+	dlink_data *ndnode = (dlink_data *)malloc(sizeof(dlink_data));
+	if (!ndnode) {
+		printf("ndnode malloc failed\n");
+		return ;
+	}
+	ndnode->data = data;
+
 	for (; i < loc; i++) {
 		dlp = dlp->next;
-		if (dlp == dldata) {
+		if (!dlp) {
 			printf("insert loc %d is invalid\n", loc);
 			return ;
 		}
 	}
-	dlink_data *ndlnode = (dlink_data *)malloc(sizeof(dlink_data));
-	if (!ndlnode) {
-		printf("ndlnode malloc failed\n");
+	if (!dlp->next) {
+		dlp->next = ndnode;
+		ndnode->prev = dlp;
+		ndnode->next = NULL;
+	} else {
+		ndnode->next = dlp->next;
+		ndnode->next->prev = ndnode;
+		dlp->next = ndnode;
+		ndnode->prev = dlp;
+	}
+
+}
+
+static void dlink_delete(dlink_data *dldata, unsigned int loc)
+{
+	printf("delete loc %d-->\n", loc);
+	int i = 0;
+	dlink_data *dlp = dldata;
+	if (!dlp) {
+		printf("dlink is not exsit\n");
 		return ;
 	}
-	ndlnode->data = data;
-
-	ndlnode->next = dlp->next;
-	dlp->next = ndlnode;
-	ndlnode->prev = dlp;
-	ndlnode->next->prev = ndlnode;
+	if (!dlp->next) {
+		printf("delete loc %d is invalid\n", loc);
+		return ;
+	}
+	//0
+	//1
+	for (; i < loc; i++) {
+		dlp = dlp->next;
+		if (!dlp || !dlp->next) {
+			printf("delete loc %d is invalid\n", loc);
+			return ;
+		}
+	}
+	dlink_data *denode = dlp->next;
+	if (!dlp->next->next) {
+		dlp->next = NULL;
+	} else {
+		dlp->next = dlp->next->next;
+		dlp->next->prev = dlp;
+	}
+	free(denode);
+	denode = NULL;
 }
 
 int main()
@@ -85,12 +126,25 @@ int main()
 	dlink_insert(dldata, 0, 'm');
 	dlink_insert(dldata, 3, 'n');
 	dlink_insert(dldata, 0, 'q');
+	dlink_insert(dldata, 2, 't');
+	dlink_show(dldata);
+
+	dlink_delete(dldata, 2);
+	dlink_show(dldata);
+	dlink_delete(dldata, 0);
+	dlink_show(dldata);
+	dlink_delete(dldata, 2);
+	dlink_show(dldata);
+	dlink_delete(dldata, 5);
+	dlink_show(dldata);
+	dlink_delete(dldata, 0);
+	dlink_show(dldata);
+	dlink_delete(dldata, 0);
+	dlink_show(dldata);
+	dlink_delete(dldata, 0);
 	dlink_show(dldata);
 
 #if 0
-	dlink_delete();
-	dlink_show(dldata);
-
 	dlink_amend();
 	dlink_show(dldata);
 
