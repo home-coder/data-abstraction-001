@@ -63,7 +63,7 @@ static void table_insert(table_data *tdata, unsigned int loc, int data)
 	table_show(tdata);
 }
 
-static void table_modify(table_data *tdata, unsigned int loc, int data)
+static void table_amend(table_data *tdata, unsigned int loc, int data)
 {
 	if (loc < 0 || loc >= tdata->length + 1) {
 		printf("locaction (%d) is invalid\n", loc);
@@ -114,7 +114,7 @@ int main()
 	table_insert(tdata, 0, 1);
 	table_insert(tdata, 4, 2);
 
-	table_modify(tdata, 1, 7);
+	table_amend(tdata, 1, 7);
 
 	table_delet(tdata, 5);
 	table_delet(tdata, 0);
