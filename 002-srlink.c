@@ -23,10 +23,10 @@ static void srlink_show(srlink_data *srldata)
 
 	while (1) {
 		printf("%c->", srlp->data);
-		if (srlp->next == srldata) {
+		srlp = srlp->next;
+		if (srlp == srldata) {
 			break;
 		}
-		srlp = srlp->next;
 	}
 	printf("\n");
 }
@@ -92,6 +92,7 @@ static void srlink_delete(srlink_data **srldata, unsigned int loc)
 {
 	int i;
 	srlink_data *srlp = *srldata;
+	srlink_data *prev = NULL;
 	if (!srlp) {
 		printf("srlink is not exsit\n");
 		return ;
@@ -107,9 +108,13 @@ static void srlink_delete(srlink_data **srldata, unsigned int loc)
 
 	//head(0)->(1)...->head(0); 0
 	if (loc == 0) {
-		srlp = srlp->next;
+		prev = *srldata;
+		while (prev->next != *srldata) {
+			prev = prev->next;
+		}
+		prev->next = (*srldata)->next;
 		free(*srldata);
-		*srldata = srlp;
+		*srldata = prev->next;
 		return ;
 	}
 
@@ -127,6 +132,49 @@ static void srlink_delete(srlink_data **srldata, unsigned int loc)
 	desrlp = NULL;
 }
 
+static void srlink_amend(srlink_data *srldata, unsigned int loc, char data)
+{
+	int i = 0;
+	srlink_data *srlp = srldata;
+	if (!srlp) {
+		printf("srlink is not exsit\n");
+		return ;
+	}
+
+	for (; i < loc; i++) {
+		srlp = srlp->next;
+		if (srlp == srldata) {
+			printf("amend loc %d is invalid\n", loc);
+			return ;
+		}
+	}
+
+	srlp->data = data;
+}
+
+static int srlink_select(srlink_data *srldata, char data)
+{
+	int loc = -1;
+	srlink_data *srlp = srldata;
+	if (!srlp) {
+		printf("srlink is not exsit\n");
+		return -1;
+	}
+
+	if (srlp->data == data) {
+		loc = 0;
+		return loc;
+	}
+	for (srlp = srlp->next, loc = 1; srlp != srldata; srlp = srlp->next) {
+		if (srlp->data == data) {
+			return loc;
+		}
+		loc++;
+	}
+
+	return -1;
+}
+
 int main()
 {
 	srlink_data *srldata;
@@ -137,19 +185,34 @@ int main()
 
 	srlink_insert(&srldata, 0, 'm');
 	srlink_insert(&srldata, 0, 't');
+	srlink_insert(&srldata, 0, 't');
+	srlink_insert(&srldata, 0, 't');
+	srlink_insert(&srldata, 3, 'e');
+	srlink_insert(&srldata, 3, 'e');
 	srlink_insert(&srldata, 3, 'e');
 	srlink_insert(&srldata, 2, 'e');
 	srlink_insert(&srldata, 1, 'w');
 	srlink_show(srldata);
 
 	srlink_delete(&srldata, 0);
+	srlink_show(srldata);
+	srlink_delete(&srldata, 3);
 	srlink_delete(&srldata, 1);
 	srlink_delete(&srldata, 3);
 	srlink_show(srldata);
-#if 0
-	srlink_amend();
-	srlink_select();
-#endif
+
+	srlink_amend(srldata, 3, 'l');
+	srlink_amend(srldata, 0, 'l');
+	srlink_amend(srldata, 8, 'l');
+	srlink_show(srldata);
+
+	int loc;
+	loc = srlink_select(srldata, 'l');
+	printf("select 'l' in loc %d\n", loc);
+	loc = srlink_select(srldata, 'm');
+	printf("select 'm' in loc %d\n", loc);
+	loc = srlink_select(srldata, 'q');
+	printf("select 'q' in loc %d\n", loc);
 
 	return 0;
 }
