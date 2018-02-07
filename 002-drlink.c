@@ -104,11 +104,13 @@ static void drlink_delete(drlink_data **drldata, unsigned int loc)
 	}
 
 	if (drlp->next == *drldata && loc == 0) { // head 0 0
+		printf("0\n");
 		free(drlp);
 		*drldata = NULL;
 		return ;
 	}
 	if (loc == 0) { //head 0... 1  1
+		printf("1\n");
 		temp = drlp->prev;
 		temp->next = drlp->next;
 		drlp->next->prev = temp;
@@ -149,6 +151,41 @@ static void drlink_amend(drlink_data *drldata, unsigned int loc, char data)
 	drlp->data = data;
 }
 
+static int drlink_select(drlink_data *drldata, char data)
+{
+	int i = 0;
+	drlink_data *drlp = drldata;
+	if (!drlp) {
+		printf("drlink is not exsit\n");
+		return ;
+	}
+
+	do {
+		if (drlp->data == data) {
+			return i;
+		}
+		drlp = drlp->next;
+		i++;
+	}while(drlp != drldata);
+
+	return -1;
+}
+
+static void drlink_destroy(drlink_data **drldata)
+{
+	drlink_data *drlp = *drldata;
+	drlink_data *temp;
+	if (!drlp) {
+		printf("drlink is not exsit\n");
+		return ;
+	}
+
+	do {
+		drlink_delete(drldata, 0);
+		printf("2\n");
+	}while(!(*drldata));
+}
+
 int main()
 {
 	drlink_data *drldata;	
@@ -183,10 +220,17 @@ int main()
 	drlink_show(drldata);
 	drlink_amend(drldata, 2, 'y');
 	drlink_show(drldata);
-#if 0
-	drlink_select();
-	drlink_destroy();
-#endif
+
+	int loc;
+	loc = drlink_select(drldata, 'u');
+	printf("select 'u' in loc %d\n", loc);
+	loc = drlink_select(drldata, 'p');
+	printf("select 'p' in loc %d\n", loc);
+	loc = drlink_select(drldata, 'g');
+	printf("select 'g' in loc %d\n", loc);
+
+	drlink_destroy(&drldata);
+	drlink_show(drldata);
 
 	return 0;
 }
