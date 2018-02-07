@@ -93,6 +93,62 @@ static void drlink_insert(drlink_data **drldata, unsigned int loc, char data)
 	ndrldata->prev = temp;
 }
 
+static void drlink_delete(drlink_data **drldata, unsigned int loc)
+{
+	int i = 0;
+	drlink_data *drlp = *drldata;
+	drlink_data *temp;
+	if (!drlp) {
+		printf("drlink is not exsit\n");
+		return ;
+	}
+
+	if (drlp->next == *drldata && loc == 0) { // head 0 0
+		free(drlp);
+		*drldata = NULL;
+		return ;
+	}
+	if (loc == 0) { //head 0... 1  1
+		temp = drlp->prev;
+		temp->next = drlp->next;
+		drlp->next->prev = temp;
+		free(*drldata);
+		*drldata = temp->next;
+		return ;
+	}
+	for (; i < loc; i++) { // head... n
+		if (drlp->next == *drldata) {
+			printf("delete loc %d is invalid\n", loc);
+			return ;
+		}
+		drlp = drlp->next;
+	}
+	temp = drlp->prev;
+	temp->next = drlp->next;
+	drlp->next->prev = temp;
+	free(drlp);
+	drlp = NULL;
+}
+
+static void drlink_amend(drlink_data *drldata, unsigned int loc, char data)
+{
+	int i = 0;
+	drlink_data *drlp = drldata;
+	if (!drlp) {
+		printf("drlink is not exsit\n");
+		return ;
+	}
+
+	for (; i < loc; i++) {
+		drlp = drlp->next;
+		if (drlp == drldata) {
+			printf("amend loc %d is invalid\n", loc);
+			return ;
+		}
+	}
+	drlp->data = data;
+}
+
 int main()
 {
 	drlink_data *drldata;	
@@ -109,9 +165,25 @@ int main()
 	drlink_show(drldata);
 	drlink_insert(&drldata, 4, 'i');
 	drlink_show(drldata);
+	drlink_insert(&drldata, 2, 'm');
+	drlink_show(drldata);
+
+	drlink_delete(&drldata, 0);
+	drlink_show(drldata);
+	drlink_delete(&drldata, 1);
+	drlink_show(drldata);
+	drlink_delete(&drldata, 2);
+	drlink_show(drldata);
+	drlink_delete(&drldata, 2);
+	drlink_show(drldata);
+
+	drlink_amend(drldata, 1, 'p');
+	drlink_show(drldata);
+	drlink_amend(drldata, 0, 'u');
+	drlink_show(drldata);
+	drlink_amend(drldata, 2, 'y');
+	drlink_show(drldata);
 #if 0
-	drlink_delete();
-	drlink_amend();
 	drlink_select();
 	drlink_destroy();
 #endif
