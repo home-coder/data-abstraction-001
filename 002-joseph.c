@@ -21,7 +21,7 @@ static void josp_init(joseph **josp, int people)
 
 int main(int argc, char **argv)
 {
-	joseph *josp;
+	joseph *josp, *last;
 	int people, hit;
 
 	if (argc < 3) {
@@ -34,6 +34,11 @@ int main(int argc, char **argv)
 	printf("p %d h %d\n", people, hit);
 
 	josp_init(&josp, people);
+
+#if 0
+	last = josp_play(josp, hit);
+	printf("last data: %c\n", last->data);
+#endif
 
 	return 0;
 }
