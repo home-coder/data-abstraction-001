@@ -104,13 +104,11 @@ static void drlink_delete(drlink_data **drldata, unsigned int loc)
 	}
 
 	if (drlp->next == *drldata && loc == 0) { // head 0 0
-		printf("0\n");
 		free(drlp);
 		*drldata = NULL;
 		return ;
 	}
 	if (loc == 0) { //head 0... 1  1
-		printf("1\n");
 		temp = drlp->prev;
 		temp->next = drlp->next;
 		drlp->next->prev = temp;
@@ -181,9 +179,9 @@ static void drlink_destroy(drlink_data **drldata)
 	}
 
 	do {
+		printf("destroy data '%c'\n", (*drldata)->data);
 		drlink_delete(drldata, 0);
-		printf("2\n");
-	}while(!(*drldata));
+	}while((*drldata) != NULL);
 }
 
 int main()
