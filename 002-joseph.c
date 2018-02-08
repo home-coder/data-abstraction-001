@@ -15,8 +15,42 @@ typedef struct _joseph {
 
 static void josp_init(joseph **josp, int people)
 {
-	while (people--) { //malloc ?
+	joseph *nnode = NULL, *pjs = *josp;
+	int i = 0;
+
+	while (i < people) { //malloc ?
+		nnode = (joseph *)malloc(sizeof(joseph));
+		if (!nnode) {
+			printf("nnode malloc failed\n");
+			return ;
+		}
+		nnode->data = 'a' + i++;
+
+		if (!pjs) {
+			pjs = nnode;
+			pjs->next = pjs;
+			*josp = pjs;
+		} else {
+			nnode->next = pjs->next;
+			pjs->next = nnode;
+			pjs = pjs->next;
+		}
 	}
+}
+
+static void josp_show(joseph *josp)
+{
+	joseph *pjs = josp;
+	if (!pjs) {
+		printf("josp is not exsit\n");
+		return ;
+	}
+
+	do {
+		printf("%c->", pjs->data);
+		pjs = pjs->next;
+	}while(pjs != josp);
+	printf("\n");
 }
 
 int main(int argc, char **argv)
@@ -34,6 +68,7 @@ int main(int argc, char **argv)
 	printf("p %d h %d\n", people, hit);
 
 	josp_init(&josp, people);
+	josp_show(josp);
 
 #if 0
 	last = josp_play(josp, hit);
