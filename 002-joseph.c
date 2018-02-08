@@ -56,7 +56,7 @@ static void josp_show(joseph *josp)
 static joseph *josp_play(joseph *josp, int hit)
 {
 	int i;
-	joseph *pjs = josp;
+	joseph *pjs = josp, *head = josp;
 	if (!pjs) {
 		printf("josp is not exsit\n");
 		return NULL;
@@ -64,20 +64,23 @@ static joseph *josp_play(joseph *josp, int hit)
 
 	/* 首先确定第一个报数人的前趋结点 cur [双链表处理好一些，此处以单链表为例]  */
 	do {
-		pjs = pjs->next;
-	}while(pjs->next != josp);
+		head = head->next;
+	}while(head->next != josp);
 
 	joseph *fnode;
 	do {
 		for (i = 1; i < hit; i++) {
 			pjs = pjs->next;
 		}
-		fnode = pjs->next;
-		pjs->next= pjs->next->next;
+		fnode = pjs;
+		printf("pjs->data %c\n", fnode->data);
+		head->next= pjs->next;
 		free(fnode);
 		fnode = NULL;
-		pjs = pjs->next;
-		printf("pjs->data %c\n", pjs->data);
+		for (i = 1; i < hit-1; i++) {
+			head = head->next;
+		}
+		pjs = head->next;
 	}while(pjs != pjs->next);
 
 	return pjs;
