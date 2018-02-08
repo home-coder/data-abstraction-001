@@ -74,18 +74,18 @@ static joseph *josp_play(joseph *josp, int hit)
 		}
 		fnode = pjs->next;
 		pjs->next= pjs->next->next;
-		//free(fnode);
+		free(fnode);
 		fnode = NULL;
 		pjs = pjs->next;
-	}while(pjs != josp);
+		printf("pjs->data %c\n", pjs->data);
+	}while(pjs != pjs->next);
 
-	printf("pjs->data %c\n", pjs->data);
 	return pjs;
 }
 
 int main(int argc, char **argv)
 {
-	joseph *josp;
+	joseph *josp = NULL;
 	joseph *last;
 	int people, hit;
 
@@ -100,10 +100,9 @@ int main(int argc, char **argv)
 
 	josp_init(&josp, people);
 	josp_show(josp);
-	josp_show(josp);
 
 	last = josp_play(josp, hit);
-	//printf("last data: %c\n", last->data);
+	printf("last data: %c\n", last->data);
 
 	return 0;
 }
