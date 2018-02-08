@@ -68,22 +68,19 @@ static joseph *josp_play(joseph *josp, int hit)
 	}while(head->next != josp);
 
 	joseph *fnode;
-	do {
+	while(head->next != head) {
 		for (i = 1; i < hit; i++) {
-			pjs = pjs->next;
+			head = head->next;
 		}
+		pjs = head->next;
 		fnode = pjs;
 		printf("pjs->data %c\n", fnode->data);
 		head->next= pjs->next;
 		free(fnode);
 		fnode = NULL;
-		for (i = 1; i < hit-1; i++) {
-			head = head->next;
-		}
-		pjs = head->next;
-	}while(pjs != pjs->next);
+	}
 
-	return pjs;
+	return head;
 }
 
 int main(int argc, char **argv)
