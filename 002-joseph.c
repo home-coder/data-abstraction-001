@@ -53,9 +53,40 @@ static void josp_show(joseph *josp)
 	printf("\n");
 }
 
+static joseph *josp_play(joseph *josp, int hit)
+{
+	int i;
+	joseph *pjs = josp;
+	if (!pjs) {
+		printf("josp is not exsit\n");
+		return NULL;
+	}
+
+	/* 首先确定第一个报数人的前趋结点 cur [双链表处理好一些，此处以单链表为例]  */
+	do {
+		pjs = pjs->next;
+	}while(pjs->next != josp);
+
+	joseph *fnode;
+	do {
+		for (i = 1; i < hit; i++) {
+			pjs = pjs->next;
+		}
+		fnode = pjs->next;
+		pjs->next= pjs->next->next;
+		//free(fnode);
+		fnode = NULL;
+		pjs = pjs->next;
+	}while(pjs != josp);
+
+	printf("pjs->data %c\n", pjs->data);
+	return pjs;
+}
+
 int main(int argc, char **argv)
 {
-	joseph *josp, *last;
+	joseph *josp;
+	joseph *last;
 	int people, hit;
 
 	if (argc < 3) {
@@ -69,11 +100,10 @@ int main(int argc, char **argv)
 
 	josp_init(&josp, people);
 	josp_show(josp);
+	josp_show(josp);
 
-#if 0
 	last = josp_play(josp, hit);
-	printf("last data: %c\n", last->data);
-#endif
+	//printf("last data: %c\n", last->data);
 
 	return 0;
 }
