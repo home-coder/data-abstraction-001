@@ -56,24 +56,31 @@ static void roulette_show(roulette *rte)
 static roulette *roulette_play(roulette *rte)
 {
 	int cham, trig;
-	roulette *rtep = rte;
+	roulette *rtep = rte, *fnode;
 	if (!rtep) {
 		printf("roulette is not exist\n");
 		return ;
 	}
 
 	//首先找到首元节点的前趋节点作为计数起始点的前趋
-	while (rtep->next != rte) {
+	do {
 		rtep = rtep->next;
-	}
+	} while (rtep->next != rte);
 
 	do {
 		printf("please input chamber number & trigger number: ");
-		scanf("%d %d", &cham, &trig);	
-		for (; i < hit; i++) {
-				
+		scanf("%d %d", &cham, &trig);
+		if (trig < cham) { //活下来了
+			rtep = rtep->next;
+			roulette_show(rtep);
+		} else { //自杀了
+			fnode = rtep->next;
+			rtep->next = rtep->next->next;
+			free(fnode);
+			fnode = NULL;
+			roulette_show(rtep->next);
 		}
-	} while();
+	} while(rtep->next != rtep);
 
 	return rtep;
 }
