@@ -2,12 +2,17 @@
  > Filename   : 002-josepharray.c
  > Author     : oneface - one_face@sina.com
  > Company    : Monte Cristo
- > Time       : 2018-02-09 17:08:32
+ > Time       : 2018-02-09 16:22:41
  ************************************************************************/
 
 /*
- 使用纯数组来实现约瑟夫环，思考与顺序表table的不同
+ 使用顺序表来完成约瑟夫环的功能
  */
 
 #include<stdio.h>
 
+int main(int argc, char **argv)
+{
+
+	return 0;
+}

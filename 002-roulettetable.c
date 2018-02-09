@@ -1,13 +1,9 @@
 /*************************************************************************
- > Filename   : 002-josepharray.c
+ > Filename   : 002-roulettetable.c
  > Author     : oneface - one_face@sina.com
  > Company    : Monte Cristo
- > Time       : 2018-02-09 17:08:32
+ > Time       : 2018-02-09 17:10:45
  ************************************************************************/
-
-/*
- 使用纯数组来实现约瑟夫环，思考与顺序表table的不同
- */
 
 #include<stdio.h>
 
