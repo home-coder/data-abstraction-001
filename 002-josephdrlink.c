@@ -45,7 +45,7 @@ static void josephdrlink_init(josephdrlink **jspdr, int people)
 			njspdr->next = jspdrp->next;
 			jspdrp->next->prev = njspdr;
 			jspdrp->next = njspdr;
-			njspdr->prev = jspdrp;	
+			njspdr->prev = jspdrp;
 		}
 		jspdrp = jspdrp->next;
 	}
@@ -63,14 +63,45 @@ static void josephdrlink_show(josephdrlink *jspdr)
 		printf("%c->", jspdrp->data);
 		jspdrp = jspdrp->next;
 	} while(jspdrp != jspdr);
+	printf("\n");
+
+	do {
+		printf("%c<-", jspdrp->data);
+		jspdrp = jspdrp->prev;
+	} while(jspdrp != jspdr);
 
 	printf("\n");
+}
+
+static josephdrlink *josephdrlink_play(josephdrlink *jspdr, int hit)
+{
+	int i;
+	josephdrlink *jspdrp = jspdr, *cur;
+
+	if (!jspdrp) {
+		printf("josephdrlink is not exsit\n");
+		return NULL;
+	}
+
+	do {
+		for (i = 1; i < hit; i++) {
+			jspdrp = jspdrp->next;
+		}
+		cur = jspdrp->prev;
+		cur->next = jspdrp->next;
+		jspdrp->next->prev = cur;
+		printf("jspdrp->data %c\n", jspdrp->data);
+		free(jspdrp);
+		jspdrp = cur->next;
+	} while(jspdrp->next != jspdrp);
+
+	return jspdrp;
 }
 
 int main(int argc, char **argv)
 {
 	int people, hit;
-	josephdrlink *jspdr = NULL;
+	josephdrlink *jspdr = NULL, *last;
 
 	if (argc < 3) {
 		fprintf(stderr, "please read usage: ./a.out 24 3\n");
@@ -83,6 +114,11 @@ int main(int argc, char **argv)
 
 	josephdrlink_init(&jspdr, people);
 	josephdrlink_show(jspdr);
+
+	last = josephdrlink_play(jspdr, hit);
+	if (last) {
+		printf("last is %c\n", last->data);
+	}
 
 	return 0;
 }
