@@ -144,6 +144,7 @@ static void huffman_coding_nodeorder(hftree *h, hfcode **hc, int s)
 		memcpy((*hc)[i], &cd[start], s - start);
 	}
 
+	free(cd);
 }
 
 static void huffman_code_print(hfcode *hc, int s)
@@ -177,6 +178,9 @@ int main()
 	//huffman_coding_rootorder(hft, 2 * s - 1);
 
 	huffman_code_print(hc, s);
+
+	free(hc);
 	free(hft);
+
 	return 0;
 }
