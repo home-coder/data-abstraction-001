@@ -12,6 +12,7 @@
  **************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
 	int weight;
@@ -120,25 +121,37 @@ static void	inorder_traverse(hftree *h, int m, int *w)
 
 static void huffman_coding_nodeorder(hftree *h, hfcode **hc, int s)
 {
-	char *cd = (char *)malloc((n-1) * sizeof(char));
+	int i, j;
+	char *cd = (char *)malloc((s-1) * sizeof(char));
 	*hc = (hfcode *)malloc(s * sizeof(hfcode));
+	cd[s - 2] = '\0';
 
 	for (i = 1; i <= s; i++) {
-		start = n - 1;
-		while (h[i].parent != -1) {
-			j = h[i].parent;
-			if (h[j].left == i) {
+		int c = i;
+		int start = s - 1;
+
+		while (h[c].parent != -1) {
+			j = h[c].parent;
+			if (h[j].left == c) {
 				cd[--start] = '0';	
 			} else {
 				cd[--start] = '1';
 			}
-
-			i = j;
+			c = j;
 		}
-		(*hc)
+
+		(*hc)[i] = (char *)malloc((s - start) * sizeof(char));
 		memcpy((*hc)[i], &cd[start], s - start);
 	}
 
+}
+
+static void huffman_code_print(hfcode *hc, int s)
+{
+	int i;
+	for (i = 1; i <= s; i++) {
+		printf("hc[%d]:%s\n", i, hc[i]);
+	}	
 }
 
 int main()
@@ -163,6 +176,7 @@ int main()
 	//from root
 	//huffman_coding_rootorder(hft, 2 * s - 1);
 
+	huffman_code_print(hc, s);
 	free(hft);
 	return 0;
 }
