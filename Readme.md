@@ -34,6 +34,7 @@
 [哈夫曼编码与解码(C语言实现)](http://touch-2011.iteye.com/blog/1058800)  
 [优化的三叉哈夫曼树](https://blog.csdn.net/wbcg111/article/details/50998021)  
 [哈夫曼树与哈夫曼编码（C语言代码实现）](https://blog.csdn.net/u012675150/article/details/43152483)
+[哈夫曼树以及文件压缩的实现](https://blog.csdn.net/qq_33951180/article/details/53229240)
 
 ---
 # 数据结构教程
