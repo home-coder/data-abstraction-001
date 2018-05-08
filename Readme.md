@@ -26,17 +26,24 @@
  - 使用哈夫曼吗
  - 通过这个需求掌握数据的压缩
 
-扩展阅读：  
+## **Q&A**
+> 文件的打开方式。这里打开文件一定要用二进制形式，"wb","rb".因为二进制打开和文本打开其实是有区别的。文本方式打开，会对‘\n’进行特殊处理，那如果这个字符本身就是'\n'.这就会出现问题，所以使用二进制打开，特点：不进行任何处理，是什么就是什么。
+
+## 扩展阅读：  
+
 [8bit数据 转换为 16bit数据的四种方法](https://www.cnblogs.com/skullboyer/p/8134199.html)  
 [哈夫曼树（赫夫曼树、最优树）及C语言实现](http://data.biancheng.net/view/33.html)  
 [哈夫曼树的基本构建与操作](https://blog.csdn.net/move_now/article/details/53398753)  
 [哈夫曼算法（haffman）实现压缩和解压缩-C语言实现](https://www.cnblogs.com/fuchongjundream/p/5589789.html)  
 [哈夫曼编码与解码(C语言实现)](http://touch-2011.iteye.com/blog/1058800)  
 [优化的三叉哈夫曼树](https://blog.csdn.net/wbcg111/article/details/50998021)  
-[哈夫曼树与哈夫曼编码（C语言代码实现）](https://blog.csdn.net/u012675150/article/details/43152483)
-[哈夫曼树以及文件压缩的实现](https://blog.csdn.net/qq_33951180/article/details/53229240)
+[哈夫曼树与哈夫曼编码（C语言代码实现）](https://blog.csdn.net/u012675150/article/details/43152483)  
+[哈夫曼树以及文件压缩的实现](https://blog.csdn.net/qq_33951180/article/details/53229240)  
+[使用libjpeg进行图片压缩(哈夫曼算法,无损压缩)](http://blog.51cto.com/13598859/2070274)(https://github.com/home-coder/CompressImageByHuffman)  
 
----
+
+-----
+
 # 数据结构教程
 
 
