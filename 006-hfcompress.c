@@ -201,6 +201,9 @@ HTNode *CreatHFM(FILE * fp, short *n, WeightType * FileLength)
 		ht[i].parent = 0;
 		ht[i].RChild = 0;
 	}
+	for (i = 0; i < *n; i++) {
+		printf("%c:%ld\n", ht[i].ch, ht[i].weight);
+	}
 	/* ------------初始化完毕！对应算法步骤1--------- */
 	for (i = *n; i < m; i++)	//创建非叶子结点,建哈夫曼树
 	{			//在ht[0]~ht[i-1]的范围内选择两个parent为0且weight最小的结点，其序号分别赋值给s1、s2返回
@@ -354,8 +357,11 @@ void Compress()
 	free(ht);		//getchar();printf("最长码串长度: %d\n",MaxCode);printf("ftell = %d\n",ftell(compressFile));
 	codeNum = CodeToFile(compressFile, hc, LeafNum, Q, &finalLength);	//把字符转成其二进制编码写入文件,返回压成多少个
 
-	rewind(compressFile);	//使文件指针移到开始printf("ftelll = %d\n",ftell(compressFile));
+	rewind(compressFile);	//使文件指针移到开始
+	printf("ftelll = %ld\n",ftell(compressFile));
 	fseek(compressFile, sizeof(WeightType) + sizeof(MyType), SEEK_SET);
+	printf("ftelll = %ld\n",ftell(compressFile));
+	printf("leafnum:%d\n", LeafNum);
 	fwrite(&LeafNum, sizeof(short), 1, compressFile);	//写入叶子个数
 	fwrite(&maxLen, sizeof(MyType), 1, compressFile);	//最长码串长度
 	fwrite(&minLen, sizeof(MyType), 1, compressFile);	//最短码串长度
